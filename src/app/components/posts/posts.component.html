@@ -1,0 +1,48 @@
+<app-post-nav></app-post-nav>
+<div class="posts container">
+    <div *ngFor="let post of posts" class="row block">
+        <div class="row">
+            <div class="col-lg-12">
+                <a [routerLink]="['/posts/', post.id]" class="header clearfix"><h3>{{post.name}}</h3></a>
+                <div class="second-header">
+                    <div class="tag-block d-inline pull-left">
+                        <strong class="text-muted">tags: </strong>
+                        <a *ngFor="let tag of post.tagged"
+                           class="post-tag" [routerLink]="['posts/tagged/' + tag.tag_slug]">
+                            {{tag.tag_slug}}
+                        </a>
+                        <span class="text-muted" *ngIf="!post.tagged.length">no tags</span>
+                    </div>
+                    <app-like
+                            [model]="'App\\Post'"
+                            [model_id]="post.id"
+                            [isLiked]="post.isLiked"
+                            [like_counter]="post.likes_counter"
+                    >
+                    </app-like>
+                </div>
+                <div class="card-block">
+                    <img src="{{post.image_url}}" alt="{{ post.name }}" class="img-thumbnail">
+                    <div class="clearfix">{{post.preamble}}</div>
+                    <strong class="float-left text-left  m-1"> Views: </strong>
+                    <strong class="text-muted float-left text-left m-1"> {{post.view_counter.view_counter}}</strong>
+                    <strong class="float-left text-left m-1"> Created: </strong>
+                    <strong class="text-muted float-left text-left  m-1"> {{post.created}}</strong>
+                    <strong class="float-left text-left  m-1">Writer:</strong>
+                    <a [routerLink]="['/user/', post.user.id]"
+                       class="btn btn-link btn-sm text-right">{{post.user.name}}</a>
+                    <a [routerLink]="['/posts/', post.id]"
+                       class="btn btn-dark btn-sm float-right text-right m-1">go to post</a>
+                    <a *ngIf="authenticated && post.user.email === user.email"
+                       [routerLink]="['/posts/update/', post.id]"
+                       class="btn btn-info btn-sm float-right text-right m-1">edit post</a>
+                </div>
+            </div>
+        </div>
+        <hr style="border: dashed 1px darkgrey; width: 100%">
+    </div>
+    <app-pagination [pagination]="pagination"
+                    [page]="page"
+                    (pageUpdated)="pageUpdated($event)">
+    </app-pagination>
+</div>
