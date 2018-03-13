@@ -2,6 +2,7 @@ import {Component, OnInit, Input, Output, EventEmitter} from "@angular/core";
 import {LikeService} from "../../services/like.service";
 import {Like} from "../../models/Like";
 import {ToastrService} from "../../services/toastr.service";
+import {app} from "../../../config/app";
 
 @Component({
     selector: "app-like",
@@ -16,6 +17,7 @@ export class LikeComponent implements OnInit {
     @Input() public model_id: number;
     @Output() public likeChanged = new EventEmitter();
     public token;
+    public domain = app.api_url;
 
     constructor(public likeService: LikeService, public toastr: ToastrService) {
         let currentUser = JSON.parse(localStorage.getItem("currentUser"));

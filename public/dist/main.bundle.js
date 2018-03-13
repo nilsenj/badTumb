@@ -878,7 +878,7 @@ var _a, _b, _c, _d, _e, _f, _g, _h;
 /***/ "../../../../../src/app/components/like/like.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<span class=\"like-block d-inline pull-right\" *ngIf=\"model\">\n<span *ngIf=\"token\" class=\"button block\">\n    <button *ngIf=\"isLiked\" (click)=\"likeToggle()\" class=\"like-btn\">\n</button>\n<button *ngIf=\"!isLiked\" (click)=\"likeToggle()\" class=\"like-hollow-btn\">\n</button>\n</span>\n    <span *ngIf=\"!token\">\n    <i class=\"like-hollow-btn\" style=\"display: inline-block;\"></i>\n    </span>\n    <strong class=\"text-info\">{{like_counter}}</strong>\n</span>"
+module.exports = "<span class=\"like-block d-inline pull-right\" *ngIf=\"model\">\n<span *ngIf=\"token\" class=\"button block\">\n    <button *ngIf=\"isLiked\" (click)=\"likeToggle()\" class=\"like-btn\">\n</button>\n<button *ngIf=\"!isLiked\" (click)=\"likeToggle()\" class=\"like-hollow-btn\">\n</button>\n</span>\n    <span *ngIf=\"!token\">\n    <i class=\"like-hollow-btn\"></i>\n    </span>\n\n    <strong class=\"text-info\">{{like_counter}}</strong>\n</span>\n"
 
 /***/ }),
 
@@ -890,7 +890,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, ".like-block {\n  display: inline-block !important;\n  width: 29%;\n  text-align: right; }\n\n.like-btn {\n  background: transparent;\n  background-image: url(\"http://lablog.dev/images/like.svg\");\n  width: 20px;\n  height: 20px;\n  background-size: 20px 20px;\n  outline: none;\n  border: none;\n  cursor: pointer; }\n\n.like-hollow-btn {\n  background: transparent;\n  background-image: url(\"http://lablog.dev/images/like_hollow.svg\");\n  width: 20px;\n  height: 20px;\n  background-size: 20px 20px;\n  outline: none;\n  border: none;\n  cursor: pointer; }\n", ""]);
+exports.push([module.i, ".like-block {\n  display: inline-block !important;\n  width: 29%;\n  text-align: right; }\n\n.like-btn {\n  background: transparent;\n  background-image: url(\"http://badtumb.local/images/like.svg\");\n  width: 20px;\n  height: 20px;\n  background-size: 20px 20px;\n  outline: none;\n  border: none;\n  cursor: pointer; }\n\n.like-hollow-btn {\n  background: transparent;\n  background-image: url(\"http://badtumb.local/images/like_hollow.svg\");\n  width: 20px;\n  height: 20px;\n  background-size: 20px 20px;\n  outline: none;\n  border: none;\n  cursor: pointer; }\n", ""]);
 
 // exports
 
@@ -908,6 +908,7 @@ module.exports = module.exports.toString();
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_like_service__ = __webpack_require__("../../../../../src/app/services/like.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_toastr_service__ = __webpack_require__("../../../../../src/app/services/toastr.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__config_app__ = __webpack_require__("../../../../../src/config/app.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -920,6 +921,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var LikeComponent = (function () {
     function LikeComponent(likeService, toastr) {
         this.likeService = likeService;
@@ -927,6 +929,7 @@ var LikeComponent = (function () {
         this.isLiked = false;
         this.model = "";
         this.likeChanged = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
+        this.domain = __WEBPACK_IMPORTED_MODULE_3__config_app__["a" /* app */].api_url;
         var currentUser = JSON.parse(localStorage.getItem("currentUser"));
         this.token = currentUser && currentUser.token;
     }

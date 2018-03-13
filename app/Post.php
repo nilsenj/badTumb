@@ -77,7 +77,7 @@ class Post extends Model
         if (!$this->attributes['image_url']) {
             return asset('images/notfound.jpg');
         }
-        return $this->attributes['image_url'];
+        return url($this->attributes['image_url']);
     }
 
     /**
