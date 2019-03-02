@@ -21,6 +21,11 @@
     box-sizing: border-box;
     -ms-flex-pack: justify;
     justify-content: space-between;
+    .search-term-container {
+      max-width: 70%;
+      display: inline-block;
+      float: left;
+    }
     a {
       white-space: normal; /* Отменяем перенос текста */
       overflow: hidden; /* Обрезаем содержимое */
@@ -47,14 +52,15 @@
         }
       }
       .thumb {
-        position: absolute;
-        display: block;
+        position: relative;
+        max-width: 30%;
+        display: inline-block;
         top: 4px;
-        right: 12px;
-        height: 37px;
-        width: 37px;
+        height: 40px;
         margin: 0;
         background-size: cover;
+        text-align: right;
+        float: right;
         background-color: rgba(0, 0, 0, .184314);
         background-position: 50% 50%;
         background-clip: content-box;

@@ -14,137 +14,128 @@ use TagsCloud\Tagging\Taggable;
  */
 class Post extends Model
 {
-    use Taggable;
-    use ViewCounterTrait;
-    use LikeableTrait;
-    use Searchable;
-    /**
-     * @var string
-     */
-    public $tagsPrefix = 'post';
-    /**
-     * @var string
-     */
-    protected $table = "posts";
-    /**
-     * @var array
-     */
-    protected $fillable = [
-        'name',
-        'preamble',
-        'body',
-        'user_id',
-        'available',
-        'image_url'
-    ];
+  use Taggable;
+  use ViewCounterTrait;
+  use LikeableTrait;
+  /**
+   * @var string
+   */
+  public $tagsPrefix = 'post';
+  /**
+   * @var string
+   */
+  protected $table = "posts";
 
-    /**
-     * Get the index name for the model.
-     *
-     * @return string
-     */
-    public function searchableAs()
-    {
-        return 'posts_index';
+  /**
+   * @var array
+   */
+  protected $fillable = [
+    'name',
+    'preamble',
+    'body',
+    'user_id',
+    'available',
+    'image_url'
+  ];
+
+  /**
+   * @var array
+   */
+  protected $appends = [
+    'created',
+    'likes_counter',
+    'created'
+  ];
+
+  /**
+   * @var array
+   */
+  protected $with = ['user', 'tagged'];
+
+  /**
+   * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+   */
+  public function user()
+  {
+    return $this->belongsTo(User::class, 'user_id');
+  }
+
+  /**
+   * @return string
+   */
+  public function getImageUrlAttribute()
+  {
+    if (!$this->attributes['image_url']) {
+      return asset('images/notfound.jpg');
     }
+    return url($this->attributes['image_url']);
+  }
 
-    /**
-     * @var array
-     */
-    protected $appends = [
-        'created',
-        'likes_counter'
-    ];
-
-    /**
-     * @var array
-     */
-    protected $with = ['user', 'tagged'];
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function user()
-    {
-        return $this->belongsTo(User::class, 'user_id');
+  /**
+   * @param $value
+   */
+  public function setImageUrlAttribute($value)
+  {
+    if (!$value) {
+      $this->attributes['image_url'] = asset('images/notfound.jpg');
+    } else {
+      $this->attributes['image_url'] = $value;
     }
+  }
 
-    /**
-     * @return string
-     */
-    public function getImageUrlAttribute()
-    {
-        if (!$this->attributes['image_url']) {
-            return asset('images/notfound.jpg');
-        }
-        return url($this->attributes['image_url']);
+  /**
+   * @return string
+   */
+  public function getCreatedAttribute()
+  {
+    if ($this->created_at) {
+      return $this->created_at->diffForHumans();
+    } else {
+      return "";
     }
+  }
 
-    /**
-     * @param $value
-     */
-    public function setImageUrlAttribute($value)
-    {
-        if (!$value) {
-            $this->attributes['image_url'] = asset('images/notfound.jpg');
-        } else {
-            $this->attributes['image_url'] = $value;
-        }
-    }
+  /**
+   * @param $query
+   * @param $user_id
+   * @return mixed
+   */
+  public function scopeUsers($query, $user_id)
+  {
+    return $query->where('user_id', $user_id);
+  }
 
-    /**
-     * @return string
-     */
-    public function getCreatedAttribute()
-    {
-        if($this->created_at) {
-            return $this->created_at->diffForHumans();
-        } else {
-            return "";
-        }
-    }
+  /**
+   * @param $query
+   * @return mixed
+   */
+  public function scopePublished($query)
+  {
+    return $query->where('available', true);
+  }
 
-    /**
-     * @param $query
-     * @param $user_id
-     * @return mixed
-     */
-    public function scopeUsers($query, $user_id)
-    {
-        return $query->where('user_id', $user_id);
-    }
+  /**
+   * @return string
+   */
+  public function getTaggedRelation()
+  {
 
-    /**
-     * @param $query
-     * @return mixed
-     */
-    public function scopePublished($query)
-    {
-        return $query->where('available', true);
-    }
+    return 'TagsCloud\Tagging\Model\PostTagged';
+  }
 
-    /**
-     * @return string
-     */
-    public function getTaggedRelation()
-    {
+  /**
+   * @return array
+   */
+  public function addTagsAttribute()
+  {
+    return $this->tagNames();
+  }
 
-        return 'TagsCloud\Tagging\Model\PostTagged';
-    }
-
-    /**
-     * @return array
-     */
-    public function addTagsAttribute()
-    {
-        return $this->tagNames();
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getLikesCounterAttribute()
-    {
-        return $this->likeCount;
-    }
+  /**
+   * @return mixed
+   */
+  public function getLikesCounterAttribute()
+  {
+    return $this->likeCount;
+  }
 }

@@ -18,7 +18,7 @@ class SearchController extends Controller
     public function search(Request $request)
     {
         if ($request->has('search') && (strlen($request->input('search')) > 1)) {
-            $searchBuilder = Post::search($request->input('search'));
+            $searchBuilder = Post::whereLike(['name', 'preamble'], $request->input('search'));
             $items = $searchBuilder->get();
             $items->map(function ($item) {
                 $item->view_counter = $item->get_counters()->first();

@@ -1,4 +1,4 @@
 export const app = {
-  api_url: "http://badtumb.local",
+  api_url: "http://badtumb.test",
   name: "badTumb"
 };

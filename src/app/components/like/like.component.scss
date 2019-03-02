@@ -4,22 +4,16 @@
   text-align: right;
 }
 .like-btn {
-  background: transparent;
-  background-image: url("http://badtumb.local/images/like.svg");
-  width: 20px;
-  height: 20px;
-  background-size: 20px 20px;
+  font-size: 20px;
   outline: none;
   border: none;
   cursor: pointer;
+  color: firebrick;
 }
 .like-hollow-btn {
-  background: transparent;
-  background-image: url("http://badtumb.local/images/like_hollow.svg");
-  width: 20px;
-  height: 20px;
-  background-size: 20px 20px;
+  font-size: 20px;
   outline: none;
+  color: grey;
   border: none;
   cursor: pointer;
 }

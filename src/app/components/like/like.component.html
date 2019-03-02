@@ -1,13 +1,12 @@
 <span class="like-block d-inline pull-right" *ngIf="model">
 <span *ngIf="token" class="button block">
-    <button *ngIf="isLiked" (click)="likeToggle()" class="like-btn">
+    <button *ngIf="isLiked" (click)="likeToggle()" class="like-btn icomoon-heart">
 </button>
-<button *ngIf="!isLiked" (click)="likeToggle()" class="like-hollow-btn">
+<button *ngIf="!isLiked" (click)="likeToggle()" class="like-hollow-btn icomoon-heart">
 </button>
 </span>
     <span *ngIf="!token">
-    <i class="like-hollow-btn"></i>
+    <i class="like-hollow-btn icomoon-heart"></i>
     </span>
-
     <strong class="text-info">{{like_counter}}</strong>
 </span>
