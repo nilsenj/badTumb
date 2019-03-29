@@ -1,31 +1,31 @@
-import {Inject, Injectable} from "@angular/core";
-import {Http, Headers, Response, RequestOptions} from "@angular/http";
-import {Observable} from "rxjs/Rx";
-import "rxjs/add/operator/map";
-import {app} from "../../config/app";
-import {Post} from "../models/Post";
+import { HttpClient } from '@angular/common/http';
+import { Inject, Injectable } from "@angular/core";
+import { Headers, Response, RequestOptions } from "@angular/http";
+import { Observable } from "rxjs";
+import { map } from 'rxjs/operators';
+import { app } from "../../config/app";
+import { AuthenticationService } from './authentication.service';
 
 @Injectable()
 export class FileUploadService {
 
-    public token: string;
-    constructor(@Inject(Http) private http: Http) {
-        let currentUser = JSON.parse(localStorage.getItem("currentUser"));
-        this.token = currentUser && currentUser.token;
-    }
+  public token: string;
 
-    fileUpload(event, post): Observable<any> {
-        let fileList: FileList = event.target.files;
-        if (fileList.length > 0) {
-            let file: File = fileList[0];
-            let formData: FormData = new FormData();
-            formData.append("file", file, file.name);
-            formData.append("post_id", post.id);
-            let headers: Headers = new Headers({"Authorization": "Bearer " + this.token});
-            let options: RequestOptions = new RequestOptions({headers: headers});
-            // get users from api
-            return this.http.post(`${app.api_url}/api/blog/file/uploadFile`, formData, options)
-                .map((response: Response) => response.json());
-        }
+  constructor (@Inject(HttpClient) private http: HttpClient, @Inject(AuthenticationService) private auth: AuthenticationService) {
+    const currentUser = this.auth.currentUserValue;
+    this.token = currentUser && currentUser.token;
+  }
+
+  fileUpload (event, post): Observable<any> {
+    const fileList: FileList = event.target.files;
+    if (fileList.length > 0) {
+      const file: File = fileList[0];
+      const formData: FormData = new FormData();
+      formData.append("file", file, file.name);
+      formData.append("post_id", post.id);
+      // get users from api
+      return this.http.post(`${app.api_url}/api/blog/file/uploadFile`, formData)
+        .pipe(map((response: any) => response));
     }
+  }
 }

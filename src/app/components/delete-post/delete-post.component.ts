@@ -2,11 +2,9 @@ import {Component, Input, OnInit} from '@angular/core';
 import {Post} from "../../models/Post";
 import {ActivatedRoute, Router} from "@angular/router";
 import {PostService} from "../../services/post.service";
-import {ToastrService} from "../../services/toastr.service";
 import {ConfirmComponentComponent} from "../confirm-component/confirm-component.component";
 import {DialogOptions, DialogService} from "ng2-bootstrap-modal";
-import {Observable} from "rxjs/Observable";
-import {Subscription} from "rxjs/Subscription";
+import {Subscription} from "rxjs";
 
 @Component({
     selector: "app-delete-post",
@@ -19,7 +17,6 @@ export class DeletePostComponent implements OnInit {
 
     constructor(public router: Router,
                 public postService: PostService,
-                public toastr: ToastrService,
                 private dialogService: DialogService) {
     }
 
@@ -52,10 +49,10 @@ export class DeletePostComponent implements OnInit {
      */
     public deletePost(): void {
         this.postService.deletePost(this.post.id).subscribe((data) => {
-            this.toastr.add("info", "You have deleted post: " + this.postName);
+            console.log("info", "You have deleted post: " + this.postName);
             this.router.navigate(["/posts"]);
         }, error => {
-            this.toastr.add("error", "Error during deleting post: " + this.postName);
+            console.log("error", "Error during deleting post: " + this.postName);
         });
     }
 

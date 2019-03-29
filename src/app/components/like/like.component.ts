@@ -1,7 +1,6 @@
 import {Component, OnInit, Input, Output, EventEmitter} from "@angular/core";
 import {LikeService} from "../../services/like.service";
 import {Like} from "../../models/Like";
-import {ToastrService} from "../../services/toastr.service";
 import {app} from "../../../config/app";
 
 @Component({
@@ -19,7 +18,7 @@ export class LikeComponent implements OnInit {
     public token;
     public domain = app.api_url;
 
-    constructor(public likeService: LikeService, public toastr: ToastrService) {
+    constructor(public likeService: LikeService) {
         let currentUser = JSON.parse(localStorage.getItem("currentUser"));
         this.token = currentUser && currentUser.token;
     }
@@ -37,9 +36,9 @@ export class LikeComponent implements OnInit {
         };
         this.likeService.likeToggle(like).subscribe((response) => {
             this.likeChanged.emit("changed");
-            this.toastr.add("info", response.msg);
+            console.log("info", response.msg);
         }, error => {
-            this.toastr.add("error", error.msg);
+            console.log("error", error.msg);
         });
     }
 

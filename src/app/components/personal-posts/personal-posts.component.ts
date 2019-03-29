@@ -2,7 +2,6 @@ import {Component, OnInit} from "@angular/core";
 import {Post} from "../../models/Post";
 import {PostService} from "../../services/post.service";
 import {ActivatedRoute} from "@angular/router";
-import {ToastrService} from "../../services/toastr.service";
 
 @Component({
     selector: "app-personal-posts",
@@ -19,8 +18,7 @@ export class PersonalPostsComponent implements OnInit {
     public authenticated: boolean = false;
     public user = {};
     constructor(public postService: PostService,
-                private route: ActivatedRoute,
-                private toastrService: ToastrService) {
+                private route: ActivatedRoute) {
         let user = JSON.parse(localStorage.getItem("currentUser"));
         if(user && user.token) {
             this.authenticated = true;
@@ -57,7 +55,7 @@ export class PersonalPostsComponent implements OnInit {
             this.pagination = response.items;
         }, response => {
             // error callback
-            this.toastrService.add("error", "Error during posts render");
+            console.log("error", "Error during posts render");
         });
     }
 }

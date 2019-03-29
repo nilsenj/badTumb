@@ -1,7 +1,6 @@
 import {Component, OnInit, ViewContainerRef} from "@angular/core";
 import {Router} from "@angular/router";
 import {AuthenticationService} from "../../services/authentication.service";
-import {ToastrService} from "../../services/toastr.service";
 
 @Component({
     selector: "app-register",
@@ -15,15 +14,14 @@ export class RegisterComponent implements OnInit {
     error = "";
 
     constructor(private router: Router,
-                private authenticationService: AuthenticationService,
-                private toastrService: ToastrService) {
+                private authenticationService: AuthenticationService) {
     }
 
     ngOnInit(): void {
         // reset login status
         if (this.authenticationService.token) {
             this.router.navigate(["/posts"]);
-            this.toastrService.add("warning", "You are already registered");
+            console.log("warning", "You are already registered");
         } else {
             // this.authenticationService.logout();
         }

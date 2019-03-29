@@ -1,47 +1,55 @@
-import {AfterViewInit, Component, Inject, Input, OnInit} from "@angular/core";
-import {User} from "../../models/User";
-import {AuthenticationService} from "../../services/authentication.service";
-import {app} from "../../../config/app";
+import { AfterViewInit, Component, Inject, Input, OnInit } from "@angular/core";
+import { User } from "../../models/User";
+import { AuthenticationService } from "../../services/authentication.service";
+import { app } from "../../../config/app";
+import { Router } from '@angular/router';
 
 @Component({
-    selector: "app-navigation",
-    templateUrl: "./navigation.component.html",
-    styleUrls: ["./navigation.component.scss"]
+  selector: "app-navigation",
+  templateUrl: "./navigation.component.html",
+  styleUrls: ["./navigation.component.scss"]
 })
 
 export class NavigationComponent implements OnInit {
-    @Input() userChange: any;
-    @Input() user: User[] = [];
-    public authenticated: boolean = false;
-    public authService;
-    public appName: string = app.name;
+  @Input() userChange: any;
+  @Input() user: User[] = [];
+  public authenticated: boolean = false;
+  public authService;
+  public appName: string = app.name;
 
-    constructor(authService: AuthenticationService) {
-        this.authService = authService;
+  constructor(authService: AuthenticationService,
+              private router: Router
+  ) {
+    this.authService = authService;
+  }
+
+  ngOnInit(): void {
+    this.getUser();
+    this.userChange.subscribe(data => {
+      if (data) {
+        this.user = data.user;
+        this.authenticated = true;
+      } else {
+        this.user = null;
+        this.authenticated = false;
+      }
+    });
+  }
+
+  public getUser(): void {
+    // get users from secure api end point
+    if (this.authService.token) {
+      this.user = this.authService.getUser();
+      this.authenticated = true;
+
+    } else {
+      this.authenticated = false;
     }
+  }
 
-    ngOnInit(): void {
-        this.getUser();
-        this.userChange.subscribe(data => {
-            if (data) {
-                this.user = data.user;
-                this.authenticated = true;
-            } else {
-                this.user = null;
-                this.authenticated = false;
-            }
-        });
-    }
+  public logout(event) {
+    this.authService.logout();
+    this.router.navigateByUrl('/login');
 
-    public getUser(): void {
-        // get users from secure api end point
-        if (this.authService.token) {
-            this.user = this.authService.getUser();
-            this.authenticated = true;
-
-        } else {
-            this.authenticated = false;
-        }
-    }
-
+  }
 }
